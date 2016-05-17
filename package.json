@@ -1,0 +1,23 @@
+{
+  "name": "jira-to-github",
+  "version": "1.0.0",
+  "description": "JIRA to GitHub issues converter ===============================",
+  "main": "jira-to-github.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eveoh/jira-to-github.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eveoh/jira-to-github/issues"
+  },
+  "homepage": "https://github.com/eveoh/jira-to-github#readme",
+  "dependencies": {
+    "github": "^0.2.4",
+    "jira": "^0.9.2"
+  }
+}
