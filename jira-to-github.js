@@ -18,14 +18,17 @@ github.authenticate({
     password: config.github.password
 });
 
-jira.searchJira(config.jira.jql, 
-		{ 	
-			maxResults: 9999, 
-			fields: [ 'summary', 'description', 'priority', 'components', 'issuetype' ] 
+jira.searchJira(config.jira.jql,
+		{
+			maxResults: 9999,
+			fields: [ 'summary', 'description', 'priority', 'components', 'issuetype', 'status' ]
 		}, function(error, result) {
+            if (error) {
+                console.log('error occurred:', error);
+                return;
+            }
 
 	result.issues.forEach(function(issue) {
-
 		labels = [];
 
 		if([ 'Blocker', 'Critical' ].indexOf(issue.fields.priority.name) >= 0)
@@ -78,11 +81,12 @@ jira.searchJira(config.jira.jql,
 
 		github.issues.create({
 		user: config.github.repouser,
-		repo: config.github.reponame, 
-		title: issue.fields.summary,
+		repo: config.github.reponame,
+		title: issue.key + ': ' + issue.fields.summary,
 		body: issue.fields.description,
-		labels: labels
-		} , function(err, res) { 
+		labels: labels,
+        state: issue.fields.status.statusCategory.name === 'Done' ? 'closed' : 'open'
+		} , function(err, res) {
 			if(err)
 				console.log("Error creating issue: " + issue.fields.summary);
 			else
